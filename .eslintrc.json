@@ -39,7 +39,7 @@
         "prettier/prettier": [
           "error",
           {
-            "singleQuote": true,
+            "singleQuote": false,
             "endOfLine": "auto"
           }
         ], // Avoid conflict rule between Prettier and Airbnb Eslint
@@ -65,7 +65,8 @@
         "unused-imports/no-unused-vars": [
           "error",
           { "argsIgnorePattern": "^_" }
-        ]
+        ],
+        "import/no-extraneous-dependencies": "off"
       }
     },
     // Configuration for testing
