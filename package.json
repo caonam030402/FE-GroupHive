@@ -1,5 +1,5 @@
 {
-  "name": "next-js-boilerplate",
+  "name": "GroupHive",
   "version": "3.52.0",
   "scripts": {
     "dev:spotlight": "spotlight-sidecar",
@@ -35,6 +35,7 @@
     "@nextui-org/react": "^2.4.8",
     "@nextui-org/system": "^2.2.6",
     "@nextui-org/theme": "^2.2.11",
+    "@react-icons/all-files": "^4.1.0",
     "@sentry/nextjs": "^7.116.0",
     "@spotlightjs/spotlight": "^1.2.17",
     "@t3-oss/env-nextjs": "^0.10.1",
@@ -42,8 +43,9 @@
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.31.0",
     "framer-motion": "^11.9.0",
+    "GroupHive": "file:",
     "lucide-react": "^0.399.0",
-    "next": "^14.2.3",
+    "next": "^14.2.13",
     "next-auth": "^5.0.0-beta.22",
     "next-intl": "^3.14.1",
     "next-js-boilerplate": "file:",

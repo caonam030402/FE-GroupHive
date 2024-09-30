@@ -33,9 +33,10 @@
       ],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
-        "project": "**/tsconfig.json"
+        "project": "./tsconfig.json"
       },
       "rules": {
+        "global-require": 0,
         "prettier/prettier": [
           "error",
           {
@@ -50,6 +51,7 @@
         "react/jsx-props-no-spreading": "off", // _app.tsx uses spread operator and also, react-hook-form
         "@typescript-eslint/comma-dangle": "off", // Avoid conflict rule between Eslint and Prettier
         "@typescript-eslint/consistent-type-imports": "error", // Ensure `import type` is used when it's necessary
+        "import/no-extraneous-dependencies": "off",
         "no-restricted-syntax": [
           "error",
           "ForInStatement",
@@ -62,11 +64,11 @@
         "import/order": "off", // Avoid conflict rule between `eslint-plugin-import` and `eslint-plugin-simple-import-sort`
         "@typescript-eslint/no-unused-vars": "off",
         "unused-imports/no-unused-imports": "error",
+        "react/no-array-index-key": "off",
         "unused-imports/no-unused-vars": [
           "error",
           { "argsIgnorePattern": "^_" }
-        ],
-        "import/no-extraneous-dependencies": "off"
+        ]
       }
     },
     // Configuration for testing

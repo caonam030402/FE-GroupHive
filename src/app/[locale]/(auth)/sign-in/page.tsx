@@ -1,5 +1,11 @@
-import React from 'react';
+import React from "react";
+
+import IntroSection from "./components/introSection";
 
 export default function SignIn() {
-  return <div>SignIn</div>;
+  return (
+    <section className="flex h-screen text-sm">
+      <IntroSection />
+    </section>
+  );
 }
