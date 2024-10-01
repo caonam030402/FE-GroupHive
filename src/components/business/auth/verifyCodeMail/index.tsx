@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@nextui-org/button";
+import { IoChevronBackOutline } from "@react-icons/all-files/io5/IoChevronBackOutline";
 import React, { useState } from "react";
 
 import InputOTP from "@/components/common/inputOtp";
@@ -23,6 +24,13 @@ export default function VerifyCodeMail({
   };
   return (
     <div>
+      <Button
+        className="mb-3 min-w-0 gap-1 px-1 py-0 text-sm"
+        size="sm"
+        variant="light"
+      >
+        <IoChevronBackOutline /> Back
+      </Button>
       <h1 className="text-2xl font-bold">Enter verification code</h1>
       <div className="mt-2">
         A 6-digit code was sent to {formatEmailHide(email)}. Enter it within 10

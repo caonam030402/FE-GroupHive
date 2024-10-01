@@ -64,6 +64,8 @@
         "import/order": "off", // Avoid conflict rule between `eslint-plugin-import` and `eslint-plugin-simple-import-sort`
         "@typescript-eslint/no-unused-vars": "off",
         "unused-imports/no-unused-imports": "error",
+        "@typescript-eslint/naming-convention": "off",
+        " ": "off",
         "react/no-array-index-key": "off",
         "unused-imports/no-unused-vars": [
           "error",
