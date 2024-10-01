@@ -32,22 +32,24 @@ export default function FormSignUp({ handleSubmitMail }: IProps) {
 
   return (
     <div className="flex w-full flex-1 flex-col items-center justify-center">
-      <form onSubmit={onSubmit} className="w-full max-w-[700px] space-y-6">
-        <h1 className="text-2xl font-bold">Enter your work email</h1>
-        <Input
-          size="md"
-          errorMessage={errors.email?.message}
-          placeholder="name@work.com"
-          isInvalid={!!errors.email?.message}
-          type="email"
-          startContent={
-            <IoMail className="pointer-events-none shrink-0 text-2xl text-default-400" />
-          }
-          {...register("email")}
-        />
-        <Button type="submit" size="md" className="w-full" color="primary">
-          Sign Up for Free
-        </Button>
+      <div className="w-full max-w-[600px] space-y-6">
+        <form onSubmit={onSubmit} className="w-full space-y-6">
+          <h1 className="text-2xl font-bold">Enter your work email</h1>
+          <Input
+            size="md"
+            errorMessage={errors.email?.message}
+            placeholder="name@work.com"
+            isInvalid={!!errors.email?.message}
+            type="email"
+            startContent={
+              <IoMail className="pointer-events-none shrink-0 text-2xl text-default-400" />
+            }
+            {...register("email")}
+          />
+          <Button type="submit" size="md" className="w-full" color="primary">
+            Sign Up for Free
+          </Button>
+        </form>
         <AuthWithProvider />
         <div className="text-sm text-default-500">
           <span>If you already have an account, </span>
@@ -55,7 +57,7 @@ export default function FormSignUp({ handleSubmitMail }: IProps) {
             Sign in
           </Link>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
