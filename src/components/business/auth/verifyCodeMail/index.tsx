@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import { Button } from "@nextui-org/button";
+import React, { useState } from "react";
 
 import InputOTP from "@/components/common/inputOtp";
 import { formatEmailHide } from "@/utils/Helpers";
@@ -12,8 +13,9 @@ interface IProps {
 export default function VerifyCodeMail({
   email = "caonam81@gmail.com",
 }: IProps) {
+  const [OTP, setOTP] = useState("");
   const handleSubmit = (pin: string) => {
-    return pin;
+    setOTP(pin);
   };
 
   const handleResendCode = () => {
@@ -34,6 +36,13 @@ export default function VerifyCodeMail({
       >
         Resend code
       </button>
+      <Button
+        isDisabled
+        color={OTP === "" ? "default" : "primary"}
+        className="mt-5 w-full"
+      >
+        Next
+      </Button>
     </div>
   );
 }
