@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import type { NextRequest } from "next/server";
 import NextAuth from "next-auth";
 import createMiddleware from "next-intl/middleware";
@@ -27,11 +26,11 @@ const authHandler = auth((req) => {
   const isProtected = !isPublicPage && !req.auth;
   const isRejected =
     req.auth &&
-    (req.nextUrl.pathname === PATH.SIGN_IN ||
-      req.nextUrl.pathname === PATH.SIGN_UP);
+    (req.nextUrl.pathname === PATH.LOGIN ||
+      req.nextUrl.pathname === PATH.REGISTER);
 
   if (isProtected) {
-    const newUrl = new URL(PATH.SIGN_IN, req.nextUrl.origin);
+    const newUrl = new URL(PATH.LOGIN, req.nextUrl.origin);
     return Response.redirect(newUrl);
   }
 

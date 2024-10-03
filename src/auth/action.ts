@@ -17,5 +17,5 @@ export async function signInWithCredential({ body }: { body: FormData }) {
 }
 
 export async function signOut() {
-  await _signOut({ redirectTo: PATH.SIGN_IN });
+  await _signOut({ redirectTo: PATH.LOGIN });
 }

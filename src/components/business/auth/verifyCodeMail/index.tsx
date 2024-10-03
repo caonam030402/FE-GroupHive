@@ -4,7 +4,7 @@ import { Button } from "@nextui-org/button";
 import { IoChevronBackOutline } from "@react-icons/all-files/io5/IoChevronBackOutline";
 import React, { useState } from "react";
 
-import { STEP_SIGN_UP } from "@/app/[locale]/(auth)/sign-in/constant";
+import { STEP_SIGN_UP } from "@/app/[locale]/(auth)/register/constant";
 import InputOTP from "@/components/common/inputOtp";
 import { formatEmailHide } from "@/utils/Helpers";
 

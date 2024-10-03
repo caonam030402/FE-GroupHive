@@ -2,9 +2,10 @@
 
 import React, { useRef, useState } from "react";
 
+import { authRegisterWithEmail } from "@/api/auth";
 import VerifyCodeMail from "@/components/business/auth/verifyCodeMail";
 
-import FormSignUp from "./components/formSignUp";
+import FormSignUp, { type FormType } from "./components/formSignUp";
 import IntroSection from "./components/introSection";
 import { STEP_SIGN_UP } from "./constant";
 
@@ -12,9 +13,10 @@ export default function SignIn() {
   const [step, setStep] = useState(STEP_SIGN_UP.SIGN_IN);
   const emailRef = useRef<string | null>(null);
 
-  const handleSubmitMail = (email: string) => {
+  const handleSubmitMail = async (data: FormType) => {
     setStep(STEP_SIGN_UP.VERIFY_CODE);
-    emailRef.current = email;
+    authRegisterWithEmail(data);
+    emailRef.current = "12312";
   };
 
   const renderStep = () => {

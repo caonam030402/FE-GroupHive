@@ -43,12 +43,14 @@ const request = async <Response>(
 
   const response = await fetch(baseUrl + url, {
     method,
-    ...baseHeader,
+    // ...baseHeader,
     headers: {
+      ...baseHeader,
       ...options.headers,
     },
     body,
   });
+
   const payload: Response = await response.json();
 
   const data = {

@@ -2,8 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import { Link } from "@nextui-org/link";
-import { IoMail } from "@react-icons/all-files/io5/IoMail";
-import React from "react";
+import { FiEye } from "@react-icons/all-files/fi/FiEye";
+import { FiEyeOff } from "@react-icons/all-files/fi/FiEyeOff";
+import { FiLock } from "@react-icons/all-files/fi/FiLock";
+import { IoMailOutline } from "@react-icons/all-files/io5/IoMailOutline";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import AuthWithProvider from "@/components/business/auth/authWithProvider";
@@ -11,13 +14,16 @@ import type { AuthValidation } from "@/validations/authValidation";
 import authValidation from "@/validations/authValidation";
 
 interface IProps {
-  handleSubmitMail: (email: string) => void;
+  handleSubmitMail: (data: FormType) => void;
 }
 
-type FormType = Pick<AuthValidation, "email">;
-const rules = authValidation.pick({ email: true });
+export type FormType = Pick<AuthValidation, "email" | "password">;
+const rules = authValidation.pick({ email: true, password: true });
 
 export default function FormSignUp({ handleSubmitMail }: IProps) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
   const {
     register,
     handleSubmit,
@@ -27,7 +33,7 @@ export default function FormSignUp({ handleSubmitMail }: IProps) {
   });
 
   const onSubmit = handleSubmit((data) => {
-    handleSubmitMail(data.email);
+    handleSubmitMail(data);
   });
 
   return (
@@ -42,9 +48,34 @@ export default function FormSignUp({ handleSubmitMail }: IProps) {
             isInvalid={!!errors.email?.message}
             type="email"
             startContent={
-              <IoMail className="pointer-events-none shrink-0 text-2xl text-default-400" />
+              <IoMailOutline className="pointer-events-none shrink-0 text-xl text-default-400" />
             }
             {...register("email")}
+          />
+          <Input
+            size="md"
+            errorMessage={errors.password?.message}
+            placeholder="******************"
+            isInvalid={!!errors.password?.message}
+            startContent={
+              <FiLock className="pointer-events-none shrink-0 text-xl text-default-400" />
+            }
+            endContent={
+              <button
+                className="focus:outline-none"
+                type="button"
+                onClick={toggleVisibility}
+                aria-label="toggle password visibility"
+              >
+                {isVisible ? (
+                  <FiEyeOff className="pointer-events-none text-xl text-default-400" />
+                ) : (
+                  <FiEye className="pointer-events-none text-xl text-default-400" />
+                )}
+              </button>
+            }
+            type={isVisible ? "text" : "password"}
+            {...register("password")}
           />
           <Button type="submit" size="md" className="w-full" color="primary">
             Sign Up for Free
