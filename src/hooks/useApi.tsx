@@ -1,36 +1,35 @@
 import { useState } from "react";
 
-interface IUseFetch {
-  fn: <body, res>(
-    body: body,
-  ) => Promise<{
-    res: res;
-    error: {
-      message: string;
-      code: number;
-    };
-  }>;
-  body: unknown;
+interface IUseFetch<BodyType, ResponseType> {
+  fn: (
+    body: BodyType | any,
+  ) => Promise<{ status: number; payload: ResponseType | any }>;
+  body: BodyType;
   onSuccess?: () => void;
   onError?: () => void;
 }
 
 export default function useApi() {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const useFetch = async ({ fn, body, onError, onSuccess }: IUseFetch) => {
-    setLoading(true);
+  const fetch = async <BodyType, ResponseType>({
+    fn,
+    body,
+    onError,
+    onSuccess,
+  }: IUseFetch<BodyType, ResponseType>) => {
+    setIsLoading(true);
     const response = await fn(body);
-    if (response.error) {
-      setLoading(false);
+    if (response.status !== 200) {
+      setIsLoading(false);
       onError?.();
     } else {
-      setLoading(false);
+      setIsLoading(false);
       onSuccess?.();
     }
-    setLoading(false);
+    setIsLoading(false);
     return response;
   };
 
-  return { useFetch, loading };
+  return { fetch, isLoading };
 }

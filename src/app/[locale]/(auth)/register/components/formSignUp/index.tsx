@@ -15,12 +15,13 @@ import authValidation from "@/validations/authValidation";
 
 interface IProps {
   handleSubmitMail: (data: FormType) => void;
+  isLoading: boolean;
 }
 
 export type FormType = Pick<AuthValidation, "email" | "password">;
 const rules = authValidation.pick({ email: true, password: true });
 
-export default function FormSignUp({ handleSubmitMail }: IProps) {
+export default function FormSignUp({ handleSubmitMail, isLoading }: IProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -77,7 +78,13 @@ export default function FormSignUp({ handleSubmitMail }: IProps) {
             type={isVisible ? "text" : "password"}
             {...register("password")}
           />
-          <Button type="submit" size="md" className="w-full" color="primary">
+          <Button
+            isLoading={isLoading}
+            type="submit"
+            size="md"
+            className="w-full"
+            color="primary"
+          >
             Sign Up for Free
           </Button>
         </form>

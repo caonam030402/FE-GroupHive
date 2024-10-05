@@ -58,7 +58,7 @@ const request = async <Response>(
     payload,
   };
 
-  if (!response.ok) {
+  if (response.ok) {
     throw new HttpError({ status: response.status, payload });
   }
 

@@ -1,6 +1,7 @@
 import { AppConfig } from "./AppConfig";
 
 export const formatEmailHide = (email: string) => {
+  if (!email) return null;
   const [localPart = "", domain = ""] = email.split("@");
   const maskedLocal = `${localPart[0]}${"*".repeat(localPart.length - 1)}`;
   const maskedDomain = `${"*".repeat(domain.length)}`;
