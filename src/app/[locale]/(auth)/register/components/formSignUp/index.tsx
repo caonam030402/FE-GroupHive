@@ -1,4 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import { Link } from "@nextui-org/link";
@@ -7,31 +6,31 @@ import { FiEyeOff } from "@react-icons/all-files/fi/FiEyeOff";
 import { FiLock } from "@react-icons/all-files/fi/FiLock";
 import { IoMailOutline } from "@react-icons/all-files/io5/IoMailOutline";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { type UseFormReturn } from "react-hook-form";
 
 import AuthWithProvider from "@/components/business/auth/authWithProvider";
-import type { AuthValidation } from "@/validations/authValidation";
-import authValidation from "@/validations/authValidation";
+
+import type { FormType } from "../../page";
 
 interface IProps {
-  handleSubmitMail: (data: FormType) => void;
+  handleSubmitMail: (data: any) => void;
   isLoading: boolean;
+  form: UseFormReturn<FormType, any, undefined>;
 }
 
-export type FormType = Pick<AuthValidation, "email" | "password">;
-const rules = authValidation.pick({ email: true, password: true });
-
-export default function FormSignUp({ handleSubmitMail, isLoading }: IProps) {
+export default function FormSignUp({
+  handleSubmitMail,
+  isLoading,
+  form,
+}: IProps) {
   const [isVisible, setIsVisible] = useState(false);
-
-  const toggleVisibility = () => setIsVisible(!isVisible);
   const {
+    formState: { errors },
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<FormType>({
-    resolver: zodResolver(rules),
-  });
+  } = form;
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
 
   const onSubmit = handleSubmit((data) => {
     handleSubmitMail(data);
@@ -51,7 +50,7 @@ export default function FormSignUp({ handleSubmitMail, isLoading }: IProps) {
             startContent={
               <IoMailOutline className="pointer-events-none shrink-0 text-xl text-default-400" />
             }
-            {...register("email")}
+            {...form.register("email")}
           />
           <Input
             size="md"

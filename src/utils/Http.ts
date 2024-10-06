@@ -1,16 +1,16 @@
 import { Env } from "@/libs/Env";
 
-class HttpError extends Error {
-  status: number;
+// class HttpError extends Error {
+//   status: number;
 
-  payload: any;
+//   payload: any;
 
-  constructor({ status, payload }: { status: number; payload: any }) {
-    super("Http Error");
-    this.status = status;
-    this.payload = payload;
-  }
-}
+//   constructor({ status, payload }: { status: number; payload: any }) {
+//     super("Http Error");
+//     this.status = status;
+//     this.payload = payload;
+//   }
+// }
 
 class Token {
   private token = "";
@@ -54,13 +54,14 @@ const request = async <Response>(
   const payload: Response = await response.json();
 
   const data = {
+    ok: response.ok,
     status: response.status,
     payload,
   };
 
-  if (response.ok) {
-    throw new HttpError({ status: response.status, payload });
-  }
+  // if (!response.ok) {
+  //   throw new HttpError({ status: response.status, payload });
+  // }
 
   return data;
 };

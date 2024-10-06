@@ -4,8 +4,8 @@ export interface IAuth {
 }
 
 export interface IAuthErrorResponse {
-  status: number;
-  errors: {
+  status?: number;
+  errors?: {
     [key: string]: string;
   };
 }

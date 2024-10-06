@@ -1,18 +1,21 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+
+import { HttpStatusCode } from "@/constants/httpStatusCode";
 
 interface IUseFetch<BodyType, ResponseType> {
   fn: (
     body: BodyType | any,
-  ) => Promise<{ status: number; payload: ResponseType | any }>;
+  ) => Promise<{ status: number; payload: ResponseType | any; ok: boolean }>;
   body: BodyType;
   onSuccess?: () => void;
-  onError?: () => void;
+  onError?: (response: ResponseType) => void;
 }
 
-export default function useApi() {
+export default function useApi<BodyType, ResponseType>() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetch = async <BodyType, ResponseType>({
+  const fetch = async ({
     fn,
     body,
     onError,
@@ -20,14 +23,20 @@ export default function useApi() {
   }: IUseFetch<BodyType, ResponseType>) => {
     setIsLoading(true);
     const response = await fn(body);
-    if (response.status !== 200) {
+    const statusCode = response.status;
+
+    if (!response.ok) {
+      statusCode !== HttpStatusCode.UnprocessableEntity &&
+        toast.error(response.payload.message);
       setIsLoading(false);
-      onError?.();
+      onError?.(response as ResponseType);
     } else {
       setIsLoading(false);
       onSuccess?.();
     }
+
     setIsLoading(false);
+
     return response;
   };
 
