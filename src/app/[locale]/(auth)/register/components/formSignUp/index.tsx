@@ -8,7 +8,7 @@ import { IoMailOutline } from "@react-icons/all-files/io5/IoMailOutline";
 import React, { useState } from "react";
 import { type UseFormReturn } from "react-hook-form";
 
-import AuthWithProvider from "@/components/business/auth/authWithProvider";
+import AuthWithProvider from "@/components/business/authWithProvider";
 
 import type { FormType } from "../../page";
 

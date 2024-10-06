@@ -5,7 +5,7 @@ import { IoChevronBackOutline } from "@react-icons/all-files/io5/IoChevronBackOu
 import React, { useState } from "react";
 
 import { STEP_SIGN_UP } from "@/app/[locale]/(auth)/register/constant";
-import InputOTP from "@/components/common/inputOtp";
+import InputOTP from "@/components/business/inputOtp";
 import { formatEmailHide } from "@/utils/Helpers";
 
 interface IProps {

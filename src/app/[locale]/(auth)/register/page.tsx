@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 import { authRegisterWithEmail } from "@/api/auth";
-import VerifyCodeMail from "@/components/business/auth/verifyCodeMail";
+import VerifyCodeMail from "@/components/business/verifyCodeMail";
 import useApi from "@/hooks/useApi";
 import type { ISuccessResponse } from "@/types";
 import type { IAuthErrorResponse } from "@/types/auth";
