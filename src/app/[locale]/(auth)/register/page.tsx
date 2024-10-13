@@ -5,7 +5,11 @@ import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import { authConfirmOtp, authRegisterWithEmail } from "@/api/auth";
+import {
+  authConfirmOtp,
+  authGenerateOtp,
+  authRegisterWithEmail,
+} from "@/api/auth";
 import type { IRequestConfirmOtp } from "@/api/auth/type";
 import VerifyCodeMail from "@/components/business/verifyCodeMail";
 import useApi from "@/hooks/useApi";
@@ -32,8 +36,8 @@ export default function SignIn() {
     resolver: zodResolver(rules),
   });
 
-  const handleSubmitMail = async (body: FormType) => {
-    await fetch({
+  const handleSubmitMail = (body: FormType) => {
+    fetch({
       fn: authRegisterWithEmail(body),
       onError: (error) => {
         const errorResponse = error.payload as IAuthErrorResponse | null;
@@ -59,8 +63,8 @@ export default function SignIn() {
     emailRef.current = body.email;
   };
 
-  const handleConfirmOtp = async (body: IRequestConfirmOtp) => {
-    await fetch({
+  const handleConfirmOtp = (body: IRequestConfirmOtp) => {
+    fetch({
       fn: authConfirmOtp(body),
 
       onError: (error) => {
@@ -70,6 +74,24 @@ export default function SignIn() {
 
       onSuccess: () => {
         toast.success("Confirm successfully !");
+      },
+    });
+  };
+
+  const handleResendOtp = () => {
+    fetch({
+      fn: authGenerateOtp({
+        user: { id: userId.current || 0 },
+        expiresTime: 60,
+      }),
+
+      onError: (error) => {
+        const errorResponse = error.payload as IErrorResponse | null;
+        toast.error(errorResponse!.message);
+      },
+
+      onSuccess: () => {
+        toast.success("Resend OTP successfully !");
       },
     });
   };
@@ -87,6 +109,7 @@ export default function SignIn() {
       case STEP_SIGN_UP.VERIFY_CODE:
         return (
           <VerifyCodeMail
+            handleResendOtp={handleResendOtp}
             userId={userId}
             isLoadingOtp={isLoading}
             handleConfirmOtp={handleConfirmOtp}

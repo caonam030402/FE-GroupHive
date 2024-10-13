@@ -19,12 +19,9 @@ export const authRegisterWithEmail = (body: IAuth) => {
 };
 
 export const authGenerateOtp = (body: IRequestGenerateOtp) => {
-  return http.post<ISuccessResponse<IResponseGenerateOtp>>(
-    "/api/v1/auth/otp/registration",
-    {
-      body: body as any,
-    },
-  );
+  return http.post<ISuccessResponse<IResponseGenerateOtp>>("/api/v1/otps", {
+    body: body as any,
+  });
 };
 
 export const authConfirmOtp = (body: IRequestConfirmOtp) => {
