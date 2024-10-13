@@ -51,7 +51,17 @@ const request = async <Response>(
     body,
   });
 
-  const payload: Response = await response.json();
+  let payload: Response | null = null;
+
+  if (response.status !== 204) {
+    const contentType = response.headers.get("content-type");
+
+    if (contentType && contentType.includes("application/json")) {
+      payload = await response.json();
+    } else {
+      payload = null;
+    }
+  }
 
   const data = {
     ok: response.ok,

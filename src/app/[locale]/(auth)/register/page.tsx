@@ -5,10 +5,11 @@ import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import { authRegisterWithEmail } from "@/api/auth";
+import { authConfirmOtp, authRegisterWithEmail } from "@/api/auth";
+import type { IRequestConfirmOtp } from "@/api/auth/type";
 import VerifyCodeMail from "@/components/business/verifyCodeMail";
 import useApi from "@/hooks/useApi";
-import type { ISuccessResponse } from "@/types";
+import type { IErrorResponse } from "@/types";
 import type { IAuthErrorResponse } from "@/types/auth";
 import authValidation, {
   type AuthValidation,
@@ -24,16 +25,16 @@ const rules = authValidation.pick({ email: true, password: true });
 export default function SignIn() {
   const [step, setStep] = useState(STEP_SIGN_UP.SIGN_IN);
   const emailRef = useRef<string | null>(null);
-  const { fetch, isLoading } = useApi<FormType, ISuccessResponse<null>>();
+  const userId = useRef<number | null>(null);
+  const { fetch, isLoading } = useApi();
+
   const form = useForm<FormType>({
     resolver: zodResolver(rules),
   });
 
   const handleSubmitMail = async (body: FormType) => {
     await fetch({
-      fn: authRegisterWithEmail,
-      body,
-
+      fn: authRegisterWithEmail(body),
       onError: (error) => {
         const errorResponse = error.payload as IAuthErrorResponse | null;
         const errors = errorResponse?.errors;
@@ -49,13 +50,30 @@ export default function SignIn() {
         }
       },
 
-      onSuccess: () => {
+      onSuccess: (response) => {
+        userId.current = Number(response.payload?.id);
         toast.success("Successfully toasted!");
         setStep(STEP_SIGN_UP.VERIFY_CODE);
       },
     });
     emailRef.current = body.email;
   };
+
+  const handleConfirmOtp = async (body: IRequestConfirmOtp) => {
+    await fetch({
+      fn: authConfirmOtp(body),
+
+      onError: (error) => {
+        const errorResponse = error.payload as IErrorResponse | null;
+        toast.error(errorResponse!.message);
+      },
+
+      onSuccess: () => {
+        toast.success("Confirm successfully !");
+      },
+    });
+  };
+
   const renderStep = () => {
     switch (step) {
       case STEP_SIGN_UP.SIGN_IN:
@@ -68,7 +86,13 @@ export default function SignIn() {
         );
       case STEP_SIGN_UP.VERIFY_CODE:
         return (
-          <VerifyCodeMail setStep={setStep} email={emailRef.current || ""} />
+          <VerifyCodeMail
+            userId={userId}
+            isLoadingOtp={isLoading}
+            handleConfirmOtp={handleConfirmOtp}
+            setStep={setStep}
+            email={emailRef.current || ""}
+          />
         );
       default:
         return null;
