@@ -5,13 +5,11 @@ import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import {
-  authConfirmOtp,
-  authGenerateOtp,
-  authRegisterWithEmail,
-} from "@/api/auth";
+import { authGenerateOtp, authRegisterWithEmail } from "@/api/auth";
 import type { IRequestConfirmOtp } from "@/api/auth/type";
+import { authCredential } from "@/auth/action";
 import VerifyCodeMail from "@/components/business/verifyCodeMail";
+import { ETriggerCredentials } from "@/constants/common";
 import useApi from "@/hooks/useApi";
 import type { IErrorResponse } from "@/types";
 import type { IAuthErrorResponse } from "@/types/auth";
@@ -64,18 +62,24 @@ export default function SignIn() {
   };
 
   const handleConfirmOtp = (body: IRequestConfirmOtp) => {
-    fetch({
-      fn: authConfirmOtp(body),
-
-      onError: (error) => {
-        const errorResponse = error.payload as IErrorResponse | null;
-        toast.error(errorResponse!.message);
-      },
-
-      onSuccess: () => {
-        toast.success("Confirm successfully !");
-      },
+    authCredential({
+      trigger: ETriggerCredentials.OTP,
+      userId: userId.current || 0,
+      code: body.code,
     });
+
+    // fetch({
+    //   fn: authConfirmOtp(body),
+
+    //   onError: (error) => {
+    //     const errorResponse = error.payload as IErrorResponse | null;
+    //     toast.error(errorResponse!.message);
+    //   },
+
+    //   onSuccess: () => {
+    //     toast.success("Confirm successfully !");
+    //   },
+    // });
   };
 
   const handleResendOtp = () => {

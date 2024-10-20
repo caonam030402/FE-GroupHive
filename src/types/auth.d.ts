@@ -3,9 +3,31 @@ export interface IAuth {
   password: string;
 }
 
+export interface IAuthResponse {
+  token?: string;
+  refreshToken?: string;
+  tokenExpires?: number;
+  user: IUser | null;
+}
+
 export interface IAuthErrorResponse {
   status?: number;
   errors?: {
     [key: string]: string;
   };
+}
+
+export interface IAuthCredentials {
+  trigger?: ETriggerCredentials;
+  code?: number;
+  userId?: number;
+}
+
+declare module "next-auth" {
+  interface Session extends IAuthResponse {}
+  interface User extends IAuthResponse {
+    error?: string;
+  }
+
+  interface JWT extends IAuthResponse {}
 }

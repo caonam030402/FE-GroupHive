@@ -1,7 +1,7 @@
 "use server";
 
 import type { ISuccessResponse } from "@/types";
-import type { IAuth } from "@/types/auth";
+import type { IAuth, IAuthResponse } from "@/types/auth";
 import http from "@/utils/Http";
 
 import type {
@@ -25,7 +25,7 @@ export const authGenerateOtp = (body: IRequestGenerateOtp) => {
 };
 
 export const authConfirmOtp = (body: IRequestConfirmOtp) => {
-  return http.post<ISuccessResponse<null>>("/api/v1/auth/email/confirm/otp", {
+  return http.post<IAuthResponse>("/api/v1/auth/email/confirm/otp", {
     body: body as any,
   });
 };

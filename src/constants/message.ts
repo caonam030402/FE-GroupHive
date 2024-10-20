@@ -4,4 +4,5 @@ export const messageValidation = {
   sixCharacters: "Must be at least 6 characters",
   emailIsInvalid: "Email is invalid",
   passwordIsInvalid: "Password is invalid",
+  usernameIsRequired: "Username is required",
 };

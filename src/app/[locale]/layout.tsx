@@ -2,6 +2,7 @@ import "@/styles/global.css";
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { SessionProvider } from "next-auth/react";
 import { NextIntlClientProvider, useMessages } from "next-intl";
 
 import { AppConfig } from "@/utils/AppConfig";
@@ -50,7 +51,9 @@ export default function RootLayout(props: {
           locale={props.params.locale}
           messages={messages}
         >
-          <Providers>{props.children}</Providers>
+          <SessionProvider>
+            <Providers>{props.children}</Providers>
+          </SessionProvider>
         </NextIntlClientProvider>
       </body>
     </html>

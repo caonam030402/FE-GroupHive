@@ -2,12 +2,13 @@
 
 import { Button } from "@nextui-org/button";
 import { IoChevronBackOutline } from "@react-icons/all-files/io5/IoChevronBackOutline";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
 import type { IRequestConfirmOtp } from "@/api/auth/type";
 import { STEP_SIGN_UP } from "@/app/[locale]/(auth)/register/constant";
 import InputOTP from "@/components/business/inputOtp";
+import { cn } from "@/lib/utils";
 import { formatEmailHide } from "@/utils/Helpers";
 
 interface IProps {
@@ -29,6 +30,12 @@ export default function VerifyCodeMail({
 }: IProps) {
   const maxLength = 6;
   const [OTP, setOTP] = useState("");
+  const secondsRemaining = 60;
+  const [timeRemaining, setTimeRemaining] = React.useState(secondsRemaining);
+
+  const isDisabledResend = useMemo(() => {
+    return timeRemaining !== 0;
+  }, [timeRemaining]);
 
   const isQualifiedOtp = useMemo(() => {
     return OTP.length === maxLength;
@@ -49,6 +56,20 @@ export default function VerifyCodeMail({
     setOTP(pin);
   };
 
+  useEffect(() => {
+    const timerInterval = setInterval(() => {
+      setTimeRemaining((prevTime) => {
+        if (prevTime === 0) {
+          clearInterval(timerInterval);
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timerInterval);
+  }, [timeRemaining]);
+
   return (
     <div className="flex w-full flex-1 flex-col items-center justify-center">
       <div className="w-full max-w-[600px]">
@@ -68,10 +89,21 @@ export default function VerifyCodeMail({
         <InputOTP length={maxLength} onComplete={handleSubmit} />
         <button
           type="button"
-          onClick={() => handleResendOtp()}
-          className="mt-5 cursor-pointer text-primary"
+          onClick={() => {
+            if (isDisabledResend) return;
+            handleResendOtp();
+            setTimeRemaining(secondsRemaining);
+          }}
+          className={cn(
+            "mt-5 flex cursor-pointer items-center gap-1 text-primary",
+            isDisabledResend && "cursor-not-allowed opacity-50",
+          )}
         >
-          Resend code
+          {!isDisabledResend ? (
+            <>Resend code</>
+          ) : (
+            <>Resend code {`${timeRemaining}s`}</>
+          )}
         </button>
         <Button
           isLoading={isLoadingOtp}

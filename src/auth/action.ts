@@ -1,6 +1,7 @@
 "use server";
 
 import { PATH } from "@/constants/common";
+import type { IAuthCredentials } from "@/types/auth";
 
 import { signIn, signOut as _signOut } from "./auth";
 
@@ -12,7 +13,7 @@ export async function signInWithOAuth({
   await signIn(provider, { redirectTo: "/" });
 }
 
-export async function signInWithCredential({ body }: { body: FormData }) {
+export async function authCredential(body: IAuthCredentials) {
   await signIn("credentials", body, { redirectTo: "/" });
 }
 

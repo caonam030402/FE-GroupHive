@@ -1,3 +1,6 @@
+import { cookies } from "next/headers";
+
+import { ENameCookie } from "@/constants/common";
 import { Env } from "@/libs/Env";
 
 // class HttpError extends Error {
@@ -12,38 +15,23 @@ import { Env } from "@/libs/Env";
 //   }
 // }
 
-class Token {
-  private token = "";
-
-  get value() {
-    return this.token;
-  }
-
-  set value(token: string) {
-    this.token = token;
-  }
-}
-
-export const clientToken = new Token();
-
 const request = async <Response>(
   method: "GET" | "POST" | "PUT" | "DELETE",
   url: string,
   options: RequestInit,
 ) => {
   const baseUrl = Env.API_URL;
-
   const body = options?.body ? JSON.stringify(options.body) : undefined;
+  const cookieStore = cookies();
 
+  const clientToken = cookieStore.get(ENameCookie.ACCESS_TOKEN)?.value;
   const baseHeader = {
     "Content-Type": "application/json",
-    Authorization:
-      clientToken.value !== "" ? `Bearer ${clientToken.value}` : "",
+    Authorization: clientToken !== "" ? `Bearer ${clientToken}}` : "",
   };
 
   const response = await fetch(baseUrl + url, {
     method,
-    // ...baseHeader,
     headers: {
       ...baseHeader,
       ...options.headers,
@@ -68,10 +56,6 @@ const request = async <Response>(
     status: response.status,
     payload,
   };
-
-  // if (!response.ok) {
-  //   throw new HttpError({ status: response.status, payload });
-  // }
 
   return data;
 };

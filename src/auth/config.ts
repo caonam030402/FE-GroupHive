@@ -1,39 +1,73 @@
-import type { NextAuthConfig } from "next-auth";
+import { cookies } from "next/headers";
+import type { JWT, NextAuthConfig, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
+
+import { authConfirmOtp } from "@/api/auth";
+import { ENameCookie } from "@/constants/common";
+import type { IErrorResponse } from "@/types";
 
 export default {
   providers: [
     Google,
     Credentials({
-      credentials: {
-        email: {},
-        password: {},
-      },
+      async authorize(credentials) {
+        const res = await authConfirmOtp({
+          user: {
+            id: Number(credentials.userId),
+          },
+          code: Number(credentials.code),
+        });
 
-      authorize: async (credentials) => {
-        const user = null;
-
-        console.log(credentials);
-
-        if (!user) {
-          throw new Error("User not found.");
+        if (!res.ok) {
+          const resErr = res.payload as IErrorResponse | null;
+          throw Error("error type", {
+            cause: { server_message: resErr?.message },
+          });
         }
+
+        cookies().set({
+          name: ENameCookie.ACCESS_TOKEN,
+          value: res.payload?.token || "",
+          httpOnly: true,
+          path: "/",
+          sameSite: "strict",
+          expires: res.payload?.tokenExpires,
+          secure: true,
+        });
+
+        const user: User = {
+          user: res.payload?.user || null,
+        };
 
         return user;
       },
     }),
   ],
+
+  session: { strategy: "jwt" },
+
   callbacks: {
     authorized: async ({ auth }) => {
       return !!auth;
     },
-    session: async ({ session }) => {
-      return session;
+    session: async ({ session, token }) => {
+      const tokenCustom = token as unknown as JWT;
+
+      return {
+        ...session,
+        user: tokenCustom.user as any,
+      };
     },
-    // signIn: ({ account, profile }) => {
-    //   console.log(account, profile);
-    //   return true;
-    // },
+
+    jwt: async ({ token, user }) => {
+      if (user) {
+        return {
+          ...token,
+          user: user as User,
+        };
+      }
+      return token;
+    },
   },
 } satisfies NextAuthConfig;
