@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
 import { ENameCookie } from "@/constants/common";
-import { Env } from "@/libs/Env";
+import { Env } from "@/libs/env";
 
 // class HttpError extends Error {
 //   status: number;

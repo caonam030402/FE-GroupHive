@@ -7,9 +7,9 @@ import toast from "react-hot-toast";
 
 import type { IRequestConfirmOtp } from "@/api/auth/type";
 import { STEP_SIGN_UP } from "@/app/[locale]/(auth)/register/constant";
-import InputOTP from "@/components/business/inputOtp";
-import { cn } from "@/lib/utils";
-import { formatEmailHide } from "@/utils/Helpers";
+import InputOTP from "@/components/business/InputOtp";
+import { cn } from "@/libs/utils";
+import { formatEmailHide } from "@/utils/helpers";
 
 interface IProps {
   email: string;

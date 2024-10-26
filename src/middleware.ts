@@ -2,9 +2,9 @@ import type { NextRequest } from "next/server";
 import NextAuth from "next-auth";
 import createMiddleware from "next-intl/middleware";
 
-import authConfig from "./auth/config";
+import authConfig from "./configs/auth/config";
+import { AppConfig } from "./configs/main/appConfig";
 import { PATH, PUBLIC_PAGES } from "./constants/common";
-import { AppConfig } from "./utils/AppConfig";
 
 const intlMiddleware = createMiddleware({
   locales: AppConfig.locales,

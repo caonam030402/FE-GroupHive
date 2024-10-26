@@ -7,8 +7,8 @@ import toast from "react-hot-toast";
 
 import { authGenerateOtp, authRegisterWithEmail } from "@/api/auth";
 import type { IRequestConfirmOtp } from "@/api/auth/type";
-import { authCredential } from "@/auth/action";
-import VerifyCodeMail from "@/components/business/verifyCodeMail";
+import VerifyCodeMail from "@/components/business/VerifyCodeMail";
+import { authCredential } from "@/configs/auth/action";
 import { ETriggerCredentials } from "@/constants/common";
 import useApi from "@/hooks/useApi";
 import type { IErrorResponse } from "@/types";
@@ -17,8 +17,8 @@ import authValidation, {
   type AuthValidation,
 } from "@/validations/authValidation";
 
-import FormSignUp from "./components/formSignUp";
-import IntroSection from "./components/introSection";
+import FormSignUp from "./components/FormSignUp";
+import IntroSection from "./components/IntroSection";
 import { STEP_SIGN_UP } from "./constant";
 
 export type FormType = Pick<AuthValidation, "email" | "password">;

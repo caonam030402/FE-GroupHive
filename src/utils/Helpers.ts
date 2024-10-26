@@ -1,4 +1,4 @@
-import { AppConfig } from "./AppConfig";
+import { AppConfig } from "../configs/main/appConfig";
 
 export const formatEmailHide = (email: string) => {
   if (!email) return null;

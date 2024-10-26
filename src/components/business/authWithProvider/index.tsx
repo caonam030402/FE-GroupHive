@@ -6,8 +6,8 @@ import { FaFacebookF } from "@react-icons/all-files/fa/FaFacebookF";
 import { FcGoogle } from "@react-icons/all-files/fc/FcGoogle";
 import React from "react";
 
-import { signInWithOAuth } from "@/auth/action";
-import Divider from "@/components/common/divider";
+import Divider from "@/components/common/Divider";
+import { signInWithOAuth } from "@/configs/auth/action";
 
 const listItemProvider = [
   {

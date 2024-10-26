@@ -2,8 +2,8 @@ import { FaCheck } from "@react-icons/all-files/fa/FaCheck";
 import Image from "next/image";
 import React from "react";
 
-import Divider from "@/components/common/divider";
-import Logo from "@/components/common/logo";
+import Divider from "@/components/common/Divider";
+import Logo from "@/components/common/Logo";
 
 import { listContent, listIcons } from "../../constant";
 

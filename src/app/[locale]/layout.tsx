@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
 import { NextIntlClientProvider, useMessages } from "next-intl";
 
-import { AppConfig } from "@/utils/AppConfig";
+import { AppConfig } from "@/configs/main/appConfig";
 
 import { Providers } from "../providers";
 
