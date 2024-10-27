@@ -2,7 +2,7 @@
 
 import type { ISuccessResponse } from "@/types";
 import type { IAuth, IAuthResponse } from "@/types/auth";
-import http from "@/utils/Http";
+import http from "@/utils/http";
 
 import type {
   IRequestConfirmOtp,
