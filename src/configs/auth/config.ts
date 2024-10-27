@@ -8,6 +8,7 @@ import { ENameCookie } from "@/constants/common";
 import type { IErrorResponse } from "@/types";
 
 export default {
+  trustHost: process.env.NODE_ENV === "development",
   providers: [
     Google,
     Credentials({
