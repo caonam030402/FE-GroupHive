@@ -14,7 +14,13 @@ export async function signInWithOAuth({
 }
 
 export async function authCredential(body: IAuthCredentials) {
-  await signIn("credentials", body, { redirectTo: "/" });
+  try {
+    return await signIn("credentials", body);
+  } catch (error: any) {
+    return {
+      error: error.cause?.err?.message,
+    };
+  }
 }
 
 export async function signOut() {

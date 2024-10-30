@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -9,7 +10,7 @@ import { authGenerateOtp, authRegisterWithEmail } from "@/api/auth";
 import type { IRequestConfirmOtp } from "@/api/auth/type";
 import VerifyCodeMail from "@/components/business/VerifyCodeMail";
 import { authCredential } from "@/configs/auth/action";
-import { ETriggerCredentials } from "@/constants/common";
+import { ETriggerCredentials } from "@/constants/auth";
 import useApi from "@/hooks/useApi";
 import type { IErrorResponse } from "@/types";
 import type { IAuthErrorResponse } from "@/types/auth";
@@ -29,6 +30,7 @@ export default function SignIn() {
   const emailRef = useRef<string | null>(null);
   const userId = useRef<number | null>(null);
   const { fetch, isLoading } = useApi();
+  const router = useRouter();
 
   const form = useForm<FormType>({
     resolver: zodResolver(rules),
@@ -54,32 +56,29 @@ export default function SignIn() {
 
       onSuccess: (response) => {
         userId.current = Number(response.payload?.id);
-        toast.success("Successfully toasted!");
+        toast.success("Success register please verify your email!");
         setStep(STEP_SIGN_UP.VERIFY_CODE);
       },
     });
     emailRef.current = body.email;
   };
 
-  const handleConfirmOtp = (body: IRequestConfirmOtp) => {
-    authCredential({
+  const handleConfirmOtp = async (body: IRequestConfirmOtp) => {
+    const res = await authCredential({
       trigger: ETriggerCredentials.OTP,
       userId: userId.current || 0,
       code: body.code,
     });
 
-    // fetch({
-    //   fn: authConfirmOtp(body),
+    if (res?.error) return toast.error(res.error);
 
-    //   onError: (error) => {
-    //     const errorResponse = error.payload as IErrorResponse | null;
-    //     toast.error(errorResponse!.message);
-    //   },
+    toast.success("Verify OTP successfully !");
 
-    //   onSuccess: () => {
-    //     toast.success("Confirm successfully !");
-    //   },
-    // });
+    setTimeout(() => {
+      router.push("/");
+    }, 2000);
+
+    return true;
   };
 
   const handleResendOtp = () => {
