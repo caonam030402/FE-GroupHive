@@ -1,20 +1,24 @@
-import { authConfirmOtp } from "@/api/auth";
+import { authConfirmOtp, authLoginWithEmail } from "@/api/auth";
 
 export enum ETriggerCredentials {
-  LOGIN = "email",
-  REGISTER = "register",
+  LOGIN = "login",
   OTP = "otp",
 }
 
 export const listCredential = (
   credentials: Partial<Record<string, unknown>>,
 ) => {
-  return {
+  const list = {
     [ETriggerCredentials.OTP]: authConfirmOtp({
       user: {
         id: Number(credentials.userId),
       },
       code: Number(credentials.code),
     }),
+    [ETriggerCredentials.LOGIN]: authLoginWithEmail({
+      email: credentials.email as string,
+      password: credentials.password as string,
+    }),
   };
+  return list[credentials.trigger as ETriggerCredentials];
 };

@@ -3,7 +3,6 @@
 import { Button } from "@nextui-org/button";
 import React from "react";
 
-import { ThemeSwitcher } from "@/components/business/ThemeSwitcher";
 import { signOut } from "@/configs/auth/action";
 
 export default function HomePage() {
@@ -17,7 +16,6 @@ export default function HomePage() {
       >
         Button
       </Button>
-      <ThemeSwitcher />
     </div>
   );
 }

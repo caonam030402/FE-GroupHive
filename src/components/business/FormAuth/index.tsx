@@ -1,6 +1,5 @@
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
-import { Link } from "@nextui-org/link";
 import { FiEye } from "@react-icons/all-files/fi/FiEye";
 import { FiEyeOff } from "@react-icons/all-files/fi/FiEyeOff";
 import { FiLock } from "@react-icons/all-files/fi/FiLock";
@@ -16,12 +15,18 @@ interface IProps {
   handleSubmitMail: (data: any) => void;
   isLoading: boolean;
   form: UseFormReturn<FormType, any, undefined>;
+  title?: string;
+  labelAction?: string;
+  description?: React.ReactNode;
 }
 
 export default function FormSignUp({
   handleSubmitMail,
   isLoading,
   form,
+  title = "Create account",
+  labelAction = "Sign in",
+  description,
 }: IProps) {
   const [isVisible, setIsVisible] = useState(false);
   const {
@@ -40,7 +45,7 @@ export default function FormSignUp({
     <div className="flex w-full flex-1 flex-col items-center justify-center">
       <div className="w-full max-w-[600px] space-y-6">
         <form onSubmit={onSubmit} className="w-full space-y-6">
-          <h1 className="text-2xl font-bold">Enter your work email</h1>
+          <h1 className="text-2xl font-bold">{title}</h1>
           <Input
             size="md"
             errorMessage={errors.email?.message}
@@ -84,16 +89,11 @@ export default function FormSignUp({
             className="w-full"
             color="primary"
           >
-            Sign Up for Free
+            {labelAction}
           </Button>
         </form>
         <AuthWithProvider />
-        <div className="text-sm text-default-500">
-          <span>If you already have an account, </span>
-          <Link size="sm" href="/">
-            Sign in
-          </Link>
-        </div>
+        {description}
       </div>
     </div>
   );

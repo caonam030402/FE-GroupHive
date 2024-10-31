@@ -13,19 +13,27 @@ import type {
 export const authRegisterWithEmail = (body: IAuth) => {
   return http.post<{
     id: number;
-  }>("/api/v1/auth/email/register", {
+  }>("auth/email/register", {
+    body: body as any,
+  });
+};
+
+export const authLoginWithEmail = (body: IAuth) => {
+  return http.post<{
+    id: number;
+  }>("auth/email/login", {
     body: body as any,
   });
 };
 
 export const authGenerateOtp = (body: IRequestGenerateOtp) => {
-  return http.post<ISuccessResponse<IResponseGenerateOtp>>("/api/v1/otps", {
+  return http.post<ISuccessResponse<IResponseGenerateOtp>>("otps", {
     body: body as any,
   });
 };
 
 export const authConfirmOtp = (body: IRequestConfirmOtp) => {
-  return http.post<IAuthResponse>("/api/v1/auth/email/confirm/otp", {
+  return http.post<IAuthResponse>("auth/email/confirm/otp", {
     body: body as any,
   });
 };

@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "@nextui-org/link";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,6 +12,7 @@ import type { IRequestConfirmOtp } from "@/api/auth/type";
 import VerifyCodeMail from "@/components/business/VerifyCodeMail";
 import { authCredential } from "@/configs/auth/action";
 import { ETriggerCredentials } from "@/constants/auth";
+import { PATH } from "@/constants/common";
 import useApi from "@/hooks/useApi";
 import type { IErrorResponse } from "@/types";
 import type { IAuthErrorResponse } from "@/types/auth";
@@ -104,9 +106,19 @@ export default function SignIn() {
       case STEP_FORM_AUTH.SIGN_IN:
         return (
           <FormAuth
+            labelAction="Sign Up for Free"
+            title="Create account"
             form={form}
             isLoading={isLoading}
             handleSubmitMail={handleSubmitMail}
+            description={
+              <div className="text-sm text-default-500">
+                <span>If you already have an account, </span>
+                <Link size="sm" href={PATH.LOGIN}>
+                  Login
+                </Link>
+              </div>
+            }
           />
         );
       case STEP_FORM_AUTH.VERIFY_CODE:

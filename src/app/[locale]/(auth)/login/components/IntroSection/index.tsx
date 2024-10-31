@@ -10,7 +10,7 @@ export default function IntroSection() {
       <div className="flex h-[90%] flex-col items-center justify-center text-center">
         <div className="h-[300px] w-[90%] overflow-hidden rounded-3xl border-[15px] border-white">
           <video
-            className="size-full rounded-3xl object-cover"
+            className="size-full rounded-md object-cover"
             src="https://framerusercontent.com/assets/3iiUyXf3NFxGzXdNizRJYlD4AY.mp4"
             autoPlay
             loop
@@ -20,7 +20,7 @@ export default function IntroSection() {
         </div>
         <div className="mt-10 flex flex-col items-center justify-center">
           <div className="text-2xl font-bold">Your one-stop work platform</div>
-          <p className="mt-2 w-3/5 text-base">
+          <p className="mt-4 w-3/5 text-base">
             Manage information, workflows, and people, all in one place.
           </p>
         </div>

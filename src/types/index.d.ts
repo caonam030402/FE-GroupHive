@@ -1,7 +1,7 @@
 export interface IErrorResponse {
   statusCode: number;
   message: string;
-  error: string;
+  errors: string;
 }
 
 export interface ISuccessResponse<Data> {

@@ -2,27 +2,27 @@ import type { JWT, NextAuthConfig, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 
-import { ETriggerCredentials, listCredential } from "@/constants/auth";
+import { listCredential } from "@/constants/auth";
 import { ENameCookie } from "@/constants/common";
 import type { IErrorResponse, IHttpResponse } from "@/types";
 import type { IAuthResponse } from "@/types/auth";
 import { setCookies } from "@/utils/clientStorage";
 
 export default {
-  trustHost: process.env.NODE_ENV === "development",
+  // trustHost: process.env.NODE_ENV === "development",
   providers: [
     Google,
     Credentials({
       async authorize(credentials) {
-        const res = (await listCredential(credentials)[
-          ETriggerCredentials.OTP
-        ]) as IHttpResponse<IAuthResponse>;
+        const res = (await listCredential(
+          credentials,
+        )) as IHttpResponse<IAuthResponse>;
 
         if (!res!.ok) {
           const resErr = res.payload as unknown as IErrorResponse | null;
 
           const user: User = {
-            error: resErr?.message || "error otp",
+            error: resErr?.message || JSON.stringify(resErr?.errors),
             user: null,
           };
           return user;

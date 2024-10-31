@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "@nextui-org/link";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,7 +12,7 @@ import FormAuth from "@/components/business/FormAuth";
 import VerifyCodeMail from "@/components/business/VerifyCodeMail";
 import { authCredential } from "@/configs/auth/action";
 import { ETriggerCredentials } from "@/constants/auth";
-import useApi from "@/hooks/useApi";
+import { PATH } from "@/constants/common";
 import authValidation, {
   type AuthValidation,
 } from "@/validations/authValidation";
@@ -25,7 +26,7 @@ const rules = authValidation.pick({ email: true, password: true });
 export default function Login() {
   const emailRef = useRef<string | null>(null);
   const userId = useRef<number | null>(null);
-  const { isLoading } = useApi();
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleConfirmOtp = async (body: IRequestConfirmOtp) => {
@@ -50,7 +51,34 @@ export default function Login() {
     resolver: zodResolver(rules),
   });
 
-  const handleSubmitMail = () => {};
+  const handleLogin = async (body: FormType) => {
+    setIsLoading(true);
+
+    const res = await authCredential<FormType>({
+      trigger: ETriggerCredentials.LOGIN,
+      email: body.email,
+      password: body.password,
+    });
+
+    setIsLoading(false);
+    const error = JSON.parse(res?.error || "{}");
+    if (res?.error) {
+      Object.keys(error || {}).forEach((key) => {
+        form.setError(key as keyof FormType, {
+          message: error?.[key],
+        });
+      });
+    } else {
+      toast.success("Login successfully !");
+
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
+    }
+
+    return true;
+  };
+
   const handleResendOtp = () => {};
 
   const [step, setStep] = useState(STEP_FORM_AUTH.LOGIN);
@@ -61,7 +89,17 @@ export default function Login() {
           <FormAuth
             form={form}
             isLoading={isLoading}
-            handleSubmitMail={handleSubmitMail}
+            handleSubmitMail={handleLogin}
+            title="Login to your account"
+            labelAction="Login"
+            description={
+              <div className="text-sm text-default-500">
+                <span> If you don&apos;t have an account, </span>
+                <Link size="sm" href={PATH.REGISTER}>
+                  Register
+                </Link>
+              </div>
+            }
           />
         );
       case STEP_FORM_AUTH.VERIFY_CODE:
