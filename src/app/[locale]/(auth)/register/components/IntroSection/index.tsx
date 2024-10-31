@@ -11,7 +11,7 @@ export default function IntroSection() {
   return (
     <div className="h-full w-1/2 bg-[url('https://lf-scm-us.feishucdn.com/larksuite/global_registration_web/static/image/left-bg.cc3d00d0.png')] bg-cover p-10 2xl:w-[30%]">
       <Logo />
-      <div className="flex h-full flex-col items-center justify-center p-6 text-center">
+      <div className="flex h-[90%] flex-col items-center justify-center p-6 text-center">
         <Image
           width={50}
           height={50}

@@ -6,62 +6,27 @@ import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import { authGenerateOtp, authRegisterWithEmail } from "@/api/auth";
 import type { IRequestConfirmOtp } from "@/api/auth/type";
+import FormAuth from "@/components/business/FormAuth";
 import VerifyCodeMail from "@/components/business/VerifyCodeMail";
 import { authCredential } from "@/configs/auth/action";
 import { ETriggerCredentials } from "@/constants/auth";
 import useApi from "@/hooks/useApi";
-import type { IErrorResponse } from "@/types";
-import type { IAuthErrorResponse } from "@/types/auth";
 import authValidation, {
   type AuthValidation,
 } from "@/validations/authValidation";
 
-import FormAuth from "../../../../components/business/FormAuth";
+import { STEP_FORM_AUTH } from "../register/constant";
 import IntroSection from "./components/IntroSection";
-import { STEP_FORM_AUTH } from "./constant";
 
 export type FormType = Pick<AuthValidation, "email" | "password">;
 const rules = authValidation.pick({ email: true, password: true });
 
-export default function SignIn() {
-  const [step, setStep] = useState(STEP_FORM_AUTH.SIGN_IN);
+export default function Login() {
   const emailRef = useRef<string | null>(null);
   const userId = useRef<number | null>(null);
-  const { fetch, isLoading } = useApi();
+  const { isLoading } = useApi();
   const router = useRouter();
-
-  const form = useForm<FormType>({
-    resolver: zodResolver(rules),
-  });
-
-  const handleSubmitMail = (body: FormType) => {
-    fetch({
-      fn: authRegisterWithEmail(body),
-      onError: (error) => {
-        const errorResponse = error.payload as IAuthErrorResponse | null;
-        const errors = errorResponse?.errors;
-        setStep(STEP_FORM_AUTH.SIGN_IN);
-
-        // Set message error from server
-        if (errors) {
-          Object.keys(errors || {}).forEach((key) => {
-            form.setError(key as keyof FormType, {
-              message: errors?.[key],
-            });
-          });
-        }
-      },
-
-      onSuccess: (response) => {
-        userId.current = Number(response.payload?.id);
-        toast.success("Success register please verify your email!");
-        setStep(STEP_FORM_AUTH.VERIFY_CODE);
-      },
-    });
-    emailRef.current = body.email;
-  };
 
   const handleConfirmOtp = async (body: IRequestConfirmOtp) => {
     const res = await authCredential({
@@ -81,27 +46,17 @@ export default function SignIn() {
     return true;
   };
 
-  const handleResendOtp = () => {
-    fetch({
-      fn: authGenerateOtp({
-        user: { id: userId.current || 0 },
-        expiresTime: 60,
-      }),
+  const form = useForm<FormType>({
+    resolver: zodResolver(rules),
+  });
 
-      onError: (error) => {
-        const errorResponse = error.payload as IErrorResponse | null;
-        toast.error(errorResponse!.message);
-      },
+  const handleSubmitMail = () => {};
+  const handleResendOtp = () => {};
 
-      onSuccess: () => {
-        toast.success("Resend OTP successfully !");
-      },
-    });
-  };
-
+  const [step, setStep] = useState(STEP_FORM_AUTH.LOGIN);
   const renderStep = () => {
     switch (step) {
-      case STEP_FORM_AUTH.SIGN_IN:
+      case STEP_FORM_AUTH.LOGIN:
         return (
           <FormAuth
             form={form}
@@ -124,11 +79,10 @@ export default function SignIn() {
         return null;
     }
   };
-
   return (
     <section className="flex h-screen text-sm">
-      <IntroSection />
       {renderStep()}
+      <IntroSection />
     </section>
   );
 }

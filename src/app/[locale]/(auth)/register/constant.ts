@@ -33,7 +33,8 @@ export const listIcons = [
   },
 ];
 
-export enum STEP_SIGN_UP {
+export enum STEP_FORM_AUTH {
+  LOGIN = "login",
   SIGN_IN = "sign-in",
   VERIFY_CODE = "verify",
 }

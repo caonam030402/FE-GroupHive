@@ -6,14 +6,14 @@ import React, { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
 import type { IRequestConfirmOtp } from "@/api/auth/type";
-import { STEP_SIGN_UP } from "@/app/[locale]/(auth)/register/constant";
+import { STEP_FORM_AUTH } from "@/app/[locale]/(auth)/register/constant";
 import InputOTP from "@/components/business/InputOtp";
 import { cn } from "@/libs/utils";
 import { formatEmailHide } from "@/utils/helpers";
 
 interface IProps {
   email: string;
-  setStep?: React.Dispatch<React.SetStateAction<STEP_SIGN_UP>>;
+  setStep?: React.Dispatch<React.SetStateAction<STEP_FORM_AUTH>>;
   handleConfirmOtp: (body: IRequestConfirmOtp) => void;
   isLoadingOtp: boolean;
   userId: React.MutableRefObject<number | null>;
@@ -77,7 +77,7 @@ export default function VerifyCodeMail({
           className="mb-3 min-w-0 gap-1 px-1 py-0 text-sm"
           size="sm"
           variant="light"
-          onClick={() => setStep?.(STEP_SIGN_UP.SIGN_IN)}
+          onClick={() => setStep?.(STEP_FORM_AUTH.SIGN_IN)}
         >
           <IoChevronBackOutline /> Back
         </Button>

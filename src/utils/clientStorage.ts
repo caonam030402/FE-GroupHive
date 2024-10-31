@@ -19,3 +19,7 @@ export const setCookies = ({
     secure: true,
   });
 };
+
+export const clearCookies = ({ key }: { key: string }) => {
+  return cookies().delete(key);
+};

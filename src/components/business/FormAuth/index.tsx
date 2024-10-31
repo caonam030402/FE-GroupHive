@@ -10,7 +10,7 @@ import { type UseFormReturn } from "react-hook-form";
 
 import AuthWithProvider from "@/components/business/AuthWithProvider";
 
-import type { FormType } from "../../page";
+import type { FormType } from "../../../app/[locale]/(auth)/register/page";
 
 interface IProps {
   handleSubmitMail: (data: any) => void;
