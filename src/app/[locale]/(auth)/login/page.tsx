@@ -60,7 +60,6 @@ export default function Login() {
       password: body.password,
     });
 
-    setIsLoading(false);
     const error = JSON.parse(res?.error || "{}");
     if (res?.error) {
       Object.keys(error || {}).forEach((key) => {
@@ -68,10 +67,13 @@ export default function Login() {
           message: error?.[key],
         });
       });
+
+      setIsLoading(false);
     } else {
       toast.success("Login successfully !");
 
       setTimeout(() => {
+        setIsLoading(false);
         router.push("/");
       }, 1000);
     }
