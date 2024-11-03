@@ -14,10 +14,10 @@ import { formatEmailHide } from "@/utils/helpers";
 interface IProps {
   email: string;
   setStep?: React.Dispatch<React.SetStateAction<STEP_FORM_AUTH>>;
-  handleConfirmOtp: (body: IRequestConfirmOtp) => void;
+  handleConfirmOtp: (body: IRequestConfirmOtp, userId: number) => void;
   isLoadingOtp: boolean;
-  userId: React.MutableRefObject<number | null>;
-  handleResendOtp: () => void;
+  userId: number | undefined;
+  handleResendOtp: (userId: number) => void;
 }
 
 export default function VerifyCodeMail({
@@ -47,12 +47,15 @@ export default function VerifyCodeMail({
       return;
     }
 
-    handleConfirmOtp({
-      user: {
-        id: userId.current || 0,
+    handleConfirmOtp(
+      {
+        user: {
+          id: userId || 0,
+        },
+        code: Number(pin),
       },
-      code: Number(pin),
-    });
+      userId || 0,
+    );
     setOTP(pin);
   };
 
@@ -77,7 +80,7 @@ export default function VerifyCodeMail({
           className="mb-3 min-w-0 gap-1 px-1 py-0 text-sm"
           size="sm"
           variant="light"
-          onClick={() => setStep?.(STEP_FORM_AUTH.SIGN_IN)}
+          onClick={() => setStep?.(STEP_FORM_AUTH.FORM_AUTH)}
         >
           <IoChevronBackOutline /> Back
         </Button>
@@ -91,7 +94,7 @@ export default function VerifyCodeMail({
           type="button"
           onClick={() => {
             if (isDisabledResend) return;
-            handleResendOtp();
+            handleResendOtp(userId || 0);
             setTimeRemaining(secondsRemaining);
           }}
           className={cn(

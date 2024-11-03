@@ -34,7 +34,6 @@ export const listIcons = [
 ];
 
 export enum STEP_FORM_AUTH {
-  LOGIN = "login",
-  SIGN_IN = "sign-in",
+  FORM_AUTH = "form-auth",
   VERIFY_CODE = "verify",
 }

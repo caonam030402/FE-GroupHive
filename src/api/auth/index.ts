@@ -12,7 +12,7 @@ import type {
 
 export const authRegisterWithEmail = (body: IAuth) => {
   return http.post<{
-    id: number;
+    userId: number;
   }>("auth/email/register", {
     body: body as any,
   });

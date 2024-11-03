@@ -36,4 +36,5 @@ interface IUser {
   createdAt: string;
   updatedAt: string;
   deletedAt: string;
+  isVerified: boolean;
 }

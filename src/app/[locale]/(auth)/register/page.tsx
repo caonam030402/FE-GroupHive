@@ -2,19 +2,15 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "@nextui-org/link";
-import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import { authGenerateOtp, authRegisterWithEmail } from "@/api/auth";
-import type { IRequestConfirmOtp } from "@/api/auth/type";
+import { authRegisterWithEmail } from "@/api/auth";
 import VerifyCodeMail from "@/components/business/VerifyCodeMail";
-import { authCredential } from "@/configs/auth/action";
-import { ETriggerCredentials } from "@/constants/auth";
 import { PATH } from "@/constants/common";
 import useApi from "@/hooks/useApi";
-import type { IErrorResponse } from "@/types";
+import useAuth from "@/hooks/useAuth";
 import type { IAuthErrorResponse } from "@/types/auth";
 import authValidation, {
   type AuthValidation,
@@ -28,11 +24,11 @@ export type FormType = Pick<AuthValidation, "email" | "password">;
 const rules = authValidation.pick({ email: true, password: true });
 
 export default function SignIn() {
-  const [step, setStep] = useState(STEP_FORM_AUTH.SIGN_IN);
+  const [step, setStep] = useState(STEP_FORM_AUTH.FORM_AUTH);
   const emailRef = useRef<string | null>(null);
   const userId = useRef<number | null>(null);
   const { fetch, isLoading } = useApi();
-  const router = useRouter();
+  const { handleConfirmOtp, handleResendOtp, isLoadingAuth } = useAuth();
 
   const form = useForm<FormType>({
     resolver: zodResolver(rules),
@@ -44,7 +40,7 @@ export default function SignIn() {
       onError: (error) => {
         const errorResponse = error.payload as IAuthErrorResponse | null;
         const errors = errorResponse?.errors;
-        setStep(STEP_FORM_AUTH.SIGN_IN);
+        setStep(STEP_FORM_AUTH.FORM_AUTH);
 
         // Set message error from server
         if (errors) {
@@ -57,7 +53,7 @@ export default function SignIn() {
       },
 
       onSuccess: (response) => {
-        userId.current = Number(response.payload?.id);
+        userId.current = Number(response.payload?.userId);
         toast.success("Success register please verify your email!");
         setStep(STEP_FORM_AUTH.VERIFY_CODE);
       },
@@ -65,45 +61,9 @@ export default function SignIn() {
     emailRef.current = body.email;
   };
 
-  const handleConfirmOtp = async (body: IRequestConfirmOtp) => {
-    const res = await authCredential({
-      trigger: ETriggerCredentials.OTP,
-      userId: userId.current || 0,
-      code: body.code,
-    });
-
-    if (res?.error) return toast.error(res.error);
-
-    toast.success("Verify OTP successfully !");
-
-    setTimeout(() => {
-      router.push("/");
-    }, 2000);
-
-    return true;
-  };
-
-  const handleResendOtp = () => {
-    fetch({
-      fn: authGenerateOtp({
-        user: { id: userId.current || 0 },
-        expiresTime: 60,
-      }),
-
-      onError: (error) => {
-        const errorResponse = error.payload as IErrorResponse | null;
-        toast.error(errorResponse!.message);
-      },
-
-      onSuccess: () => {
-        toast.success("Resend OTP successfully !");
-      },
-    });
-  };
-
   const renderStep = () => {
     switch (step) {
-      case STEP_FORM_AUTH.SIGN_IN:
+      case STEP_FORM_AUTH.FORM_AUTH:
         return (
           <FormAuth
             labelAction="Sign Up for Free"
@@ -125,8 +85,8 @@ export default function SignIn() {
         return (
           <VerifyCodeMail
             handleResendOtp={handleResendOtp}
-            userId={userId}
-            isLoadingOtp={isLoading}
+            userId={userId.current || 0}
+            isLoadingOtp={isLoadingAuth}
             handleConfirmOtp={handleConfirmOtp}
             setStep={setStep}
             email={emailRef.current || ""}

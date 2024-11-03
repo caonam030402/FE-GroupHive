@@ -29,5 +29,5 @@ export default function useApi() {
     return response;
   }
 
-  return { fetch, isLoading };
+  return { fetch, isLoading, setIsLoading };
 }

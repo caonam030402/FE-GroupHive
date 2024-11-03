@@ -7,12 +7,12 @@ import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import type { IRequestConfirmOtp } from "@/api/auth/type";
 import FormAuth from "@/components/business/FormAuth";
 import VerifyCodeMail from "@/components/business/VerifyCodeMail";
 import { authCredential } from "@/configs/auth/action";
 import { ETriggerCredentials } from "@/constants/auth";
 import { PATH } from "@/constants/common";
+import useAuth from "@/hooks/useAuth";
 import authValidation, {
   type AuthValidation,
 } from "@/validations/authValidation";
@@ -28,24 +28,8 @@ export default function Login() {
   const userId = useRef<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-
-  const handleConfirmOtp = async (body: IRequestConfirmOtp) => {
-    const res = await authCredential({
-      trigger: ETriggerCredentials.OTP,
-      userId: userId.current || 0,
-      code: body.code,
-    });
-
-    if (res?.error) return toast.error(res.error);
-
-    toast.success("Verify OTP successfully !");
-
-    setTimeout(() => {
-      router.push("/");
-    }, 2000);
-
-    return true;
-  };
+  const [step, setStep] = useState(STEP_FORM_AUTH.FORM_AUTH);
+  const { handleConfirmOtp, handleResendOtp, isLoadingAuth } = useAuth();
 
   const form = useForm<FormType>({
     resolver: zodResolver(rules),
@@ -61,7 +45,16 @@ export default function Login() {
     });
 
     const error = JSON.parse(res?.error || "{}");
+
     if (res?.error) {
+      if (error.isVerified) {
+        setIsLoading(false);
+        setStep(STEP_FORM_AUTH.VERIFY_CODE);
+        emailRef.current = body.email;
+        userId.current = error.userId;
+        return;
+      }
+
       Object.keys(error || {}).forEach((key) => {
         form.setError(key as keyof FormType, {
           message: error?.[key],
@@ -77,16 +70,11 @@ export default function Login() {
         router.push("/");
       }, 1000);
     }
-
-    return true;
   };
 
-  const handleResendOtp = () => {};
-
-  const [step, setStep] = useState(STEP_FORM_AUTH.LOGIN);
   const renderStep = () => {
     switch (step) {
-      case STEP_FORM_AUTH.LOGIN:
+      case STEP_FORM_AUTH.FORM_AUTH:
         return (
           <FormAuth
             form={form}
@@ -108,8 +96,8 @@ export default function Login() {
         return (
           <VerifyCodeMail
             handleResendOtp={handleResendOtp}
-            userId={userId}
-            isLoadingOtp={isLoading}
+            userId={userId.current || 0}
+            isLoadingOtp={isLoadingAuth}
             handleConfirmOtp={handleConfirmOtp}
             setStep={setStep}
             email={emailRef.current || ""}
