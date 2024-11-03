@@ -29,5 +29,12 @@ declare module "next-auth" {
     error?: string;
   }
 
-  interface JWT extends IAuthResponse {}
+  interface JWT {
+    user: {
+      user: IUser | null;
+      token: string;
+      refreshToken: string;
+      tokenExpires: number;
+    };
+  }
 }

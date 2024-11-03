@@ -37,3 +37,15 @@ export const authConfirmOtp = (body: IRequestConfirmOtp) => {
     body: body as any,
   });
 };
+
+export const authRefreshToken = (refreshToken: string) => {
+  return http.post<IAuthResponse>("auth/refresh", {
+    headers: {
+      Authorization: `Bearer ${refreshToken}`,
+    },
+  });
+};
+
+export const authLogout = () => {
+  return http.post<IAuthResponse>("auth/logout");
+};

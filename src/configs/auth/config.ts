@@ -2,6 +2,7 @@ import type { JWT, NextAuthConfig, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 
+import { authRefreshToken } from "@/api/auth";
 import { listCredential } from "@/constants/auth";
 import { ENameCookie } from "@/constants/common";
 import type { IErrorResponse, IHttpResponse } from "@/types";
@@ -36,6 +37,9 @@ export default {
 
         const user: User = {
           user: res!.payload?.user || null,
+          token: res!.payload?.token || "",
+          refreshToken: res!.payload?.refreshToken || "",
+          tokenExpires: res!.payload?.tokenExpires || 0,
         };
 
         return user;
@@ -65,13 +69,40 @@ export default {
     },
 
     jwt: async ({ token, user }) => {
+      const tokenCustom = token as unknown as JWT;
+
       if (user) {
         return {
           ...token,
+          exp: user.tokenExpires,
           user: user as User,
         };
       }
-      return token;
+
+      if (token.exp !== undefined && token.exp > Date.now() / 1000) {
+        return token;
+      }
+
+      const res = await authRefreshToken(tokenCustom.user.refreshToken);
+
+      setCookies({
+        value: res!.payload?.token || "",
+        name: ENameCookie.ACCESS_TOKEN,
+        expires: res.payload?.tokenExpires || 0,
+      });
+
+      const newToken = {
+        ...token,
+        exp: res?.payload?.tokenExpires || 0,
+        user: {
+          user: tokenCustom.user.user,
+          token: res?.payload?.token || "",
+          refreshToken: res?.payload?.refreshToken || "",
+          tokenExpires: res?.payload?.tokenExpires || 0,
+        },
+      };
+
+      return newToken;
     },
   },
 } satisfies NextAuthConfig;
