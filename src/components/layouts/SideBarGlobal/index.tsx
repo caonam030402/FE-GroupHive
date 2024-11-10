@@ -3,34 +3,58 @@
 "use client";
 
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import QuickCreate from "@/components/business/QuickCreate";
 import QuickSearch from "@/components/business/QuickSearch";
 import UserSetting from "@/components/business/UserSetting";
+import { cn } from "@/libs/utils";
+import { selectIsCollapsed } from "@/stores/setting/selectors";
+import { setIsCollapsedSideBar } from "@/stores/setting/slice";
 
 import useResize from "./hooks/useResize";
 import ListItemSideBar from "./ListItemSideBar";
 
 export default function SideBarGlobal() {
-  const { sidebarWidth, handleMouseDown } = useResize();
+  const dispatch = useDispatch();
+  const minWidth = 150;
+  const minWidthCollapse = 70;
+  const isCollapsedSideBar = useSelector(selectIsCollapsed);
+
+  const checkHandleCollapse = (sidebarWidth: number, setSidebarWidth: any) => {
+    if (sidebarWidth < minWidth + 10) {
+      setSidebarWidth(minWidthCollapse);
+      dispatch(setIsCollapsedSideBar(true));
+    } else {
+      dispatch(setIsCollapsedSideBar(false));
+    }
+  };
+  const { sidebarWidth, handleMouseDown } = useResize({
+    setAction: checkHandleCollapse,
+    minWidth,
+  });
+
+  const isBetweenStyle = isCollapsedSideBar ? "flex flex-col items-center" : "";
 
   return (
     <div className="flex h-screen">
       <div
         style={{ width: sidebarWidth }}
-        className="flex h-full w-[230px] flex-col items-start justify-between border-r p-3"
+        className={cn("flex h-full w-[230px] flex-col justify-between p-3", {
+          "pl-[3px] pr-[1px]": isCollapsedSideBar,
+        })}
       >
-        <div className="w-full">
+        <div className={cn("w-full space-y-6", isBetweenStyle)}>
           <UserSetting />
           <ListItemSideBar />
         </div>
-        <div className="space-y-2">
+        <div className={cn("space-y-2", isBetweenStyle)}>
           <QuickCreate />
           <QuickSearch />
         </div>
       </div>
       <div
-        className="w-[0.5px] cursor-col-resize bg-primary-50 hover:bg-primary"
+        className="w-[2px] cursor-col-resize hover:bg-primary"
         onMouseDown={handleMouseDown}
       />
     </div>

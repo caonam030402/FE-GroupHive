@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Avatar,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -9,19 +8,29 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react";
 import React from "react";
+import { useSelector } from "react-redux";
 
+import User from "@/components/common/User";
 import { userMenuOptions } from "@/constants/setting";
+import { selectIsCollapsed } from "@/stores/setting/selectors";
 
 import AccountHeader from "./AccountHeader";
 
 export default function UserSetting() {
+  const isCollapsedSideBar = useSelector(selectIsCollapsed);
   return (
     <Dropdown placement="left-start">
       <DropdownTrigger>
-        <Avatar
-          src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
-          size="md"
-        />
+        <div>
+          <User
+            onlyAvatar={isCollapsedSideBar}
+            info={{
+              name: "John Doe",
+              email: "9M8Hh@example.com",
+              avatar: "https://i.pravatar.cc/150?u=a04258a2462d826712d",
+            }}
+          />
+        </div>
       </DropdownTrigger>
       <DropdownMenu
         className="w-[20vw]"

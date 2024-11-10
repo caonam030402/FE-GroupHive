@@ -1,6 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+
+import { cn } from "@/libs/utils";
+import { selectIsCollapsed } from "@/stores/setting/selectors";
 
 import ItemSideBar from "./ItemSideBar";
 import type { listSidebarItems } from "./ListItemSideBar";
@@ -10,6 +14,7 @@ export default function SectionSideBar({
 }: {
   item: (typeof listSidebarItems)[0];
 }) {
+  const isCollapsedSideBar = useSelector(selectIsCollapsed);
   const [isOpenSubMenu, setIsOpenSubMenu] = useState(false);
   const isHasSubMenu = item.children && item.children.length > 0;
 
@@ -25,10 +30,16 @@ export default function SectionSideBar({
           isOpenSubMenu,
           isHasSubMenu,
           openSubMenu,
+          isParent: true,
         }}
       />
       <div
-        className={`submenu ml-4 border-l pl-2 ${isOpenSubMenu ? "open" : ""}`}
+        className={cn(
+          `submenu ml-4 border-l pl-2 ${isOpenSubMenu ? "open" : ""}`,
+          {
+            "ml-0 pl-0": isCollapsedSideBar,
+          },
+        )}
       >
         {isOpenSubMenu &&
           item.children &&
