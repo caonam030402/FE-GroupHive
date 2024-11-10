@@ -29,6 +29,7 @@
     "@libsql/client": "^0.6.1",
     "@logtail/pino": "^0.4.21",
     "@nextui-org/avatar": "^2.0.33",
+    "@nextui-org/badge": "^2.0.32",
     "@nextui-org/button": "^2.0.38",
     "@nextui-org/divider": "^2.0.32",
     "@nextui-org/dropdown": "^2.1.31",

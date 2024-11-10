@@ -60,7 +60,7 @@ export default function QuickCreate() {
         {listQuickCreate.map((item) => (
           <DropdownItem
             key={item.id}
-            shortcut={item.shortcut}
+            // shortcut={item.shortcut}
             startContent={<span>{item.icon}</span>}
           >
             {item.name}

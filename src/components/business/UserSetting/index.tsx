@@ -24,7 +24,7 @@ export default function UserSetting() {
         />
       </DropdownTrigger>
       <DropdownMenu
-        className="w-[30vw]"
+        className="w-[20vw]"
         variant="faded"
         aria-label="Dropdown menu with "
       >
