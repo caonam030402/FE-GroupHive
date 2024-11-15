@@ -15,6 +15,8 @@ import { FiUser } from "@react-icons/all-files/fi/FiUser";
 import { HiOutlineDocumentAdd } from "@react-icons/all-files/hi/HiOutlineDocumentAdd";
 import React from "react";
 
+import { cn } from "@/libs/utils";
+
 const listQuickCreate = [
   {
     id: "1",
@@ -48,11 +50,19 @@ const listQuickCreate = [
   },
 ];
 
-export default function QuickCreate() {
+interface Props {
+  className?: string;
+}
+
+export default function QuickCreate({ className }: Props) {
   return (
     <Dropdown placement="left-start">
       <DropdownTrigger>
-        <Button isIconOnly className="size-4 rounded-full">
+        <Button
+          size="sm"
+          isIconOnly
+          className={cn("rounded-full size-2", className)}
+        >
           <FiPlus className="text-2xl" />
         </Button>
       </DropdownTrigger>

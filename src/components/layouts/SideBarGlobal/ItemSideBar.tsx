@@ -70,8 +70,10 @@ export default function ItemSideBar({ item }: { item: IItemSideBar }) {
             {item.isOpenSubMenu && isCollapsedSideBar && item.isParent ? (
               <IoIosArrowDown />
             ) : (
-              item.icon
-            )}{" "}
+              <span className={cn({ "text-primary": isActive })}>
+                {item.icon}
+              </span>
+            )}
           </span>
           <span>{item.title}</span>
         </div>

@@ -45,12 +45,15 @@ export default function SideBarGlobal() {
         })}
       >
         <div className={cn("w-full space-y-6", isBetweenStyle)}>
-          <UserSetting />
+          <div className="flex justify-between">
+            <UserSetting />
+            {!isCollapsedSideBar && <QuickCreate />}
+          </div>
           <ListItemSideBar />
         </div>
-        <div className={cn("space-y-2", isBetweenStyle)}>
-          <QuickCreate />
-          <QuickSearch />
+        <div className={cn("space-y-2 w-full", isBetweenStyle)}>
+          {isCollapsedSideBar && <QuickCreate />}
+          <QuickSearch isExpanded={!isCollapsedSideBar} />
         </div>
       </div>
       <div

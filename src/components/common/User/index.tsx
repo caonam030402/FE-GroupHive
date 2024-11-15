@@ -14,14 +14,18 @@ export default function User({ info, onlyAvatar }: Props) {
   return (
     <div className="flex cursor-pointer items-center gap-2" aria-hidden="true">
       <Avatar
-        className="shrink-0"
+        className="size-12 shrink-0"
         src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
         size="md"
       />
       {!onlyAvatar && (
         <div>
-          <div className="text-base font-bold">{info.name}</div>
-          <div className="text-tiny">{info.email}</div>
+          <div className="overflow-hidden text-ellipsis text-base font-bold">
+            {info.name}
+          </div>
+          <div className="overflow-hidden text-ellipsis text-tiny">
+            {info.email}
+          </div>
         </div>
       )}
     </div>
