@@ -19,7 +19,7 @@ interface Props {
 export default function ChatItem({ item }: Props) {
   const params = useParams<{ id: string }>();
   const router = useRouter();
-  const isActive = item.id.toString() === params.id[0];
+  const isActive = item.id.toString() === params.id?.[0];
 
   const handleClick = () => {
     router.push(`/workplace/messenger/${item.id}`);
