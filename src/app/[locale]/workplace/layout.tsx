@@ -10,7 +10,7 @@ export default function layoutWorkplace({ children }: Props) {
     <div className="flex">
       <SideBarGlobal />
       <div className="ml-[0.5px] size-full h-screen py-3 pr-3">
-        <div className=" size-full rounded-md bg-white">{children}</div>
+        <div className=" size-full rounded-md ">{children}</div>
       </div>
     </div>
   );

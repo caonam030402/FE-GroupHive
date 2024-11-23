@@ -1,5 +1,7 @@
 import React from "react";
 
+import Card from "@/components/common/Card";
+
 export default function page() {
-  return <div>page</div>;
+  return <Card>page</Card>;
 }

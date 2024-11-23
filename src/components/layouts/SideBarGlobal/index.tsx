@@ -41,7 +41,7 @@ export default function SideBarGlobal() {
       <div
         style={{ width: sidebarWidth }}
         className={cn("flex h-full w-[230px] flex-col justify-between p-3", {
-          "pl-[3px] pr-[1px]": isCollapsedSideBar,
+          "px-1": isCollapsedSideBar,
         })}
       >
         <div className={cn("w-full space-y-6", isBetweenStyle)}>
@@ -57,7 +57,8 @@ export default function SideBarGlobal() {
         </div>
       </div>
       <div
-        className="w-[2px] cursor-col-resize hover:bg-primary"
+        // cursor-col-resize
+        // className="w-[2px]"
         onMouseDown={handleMouseDown}
       />
     </div>

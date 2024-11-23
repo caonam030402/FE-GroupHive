@@ -1,3 +1,8 @@
+import { FaCalendar } from "@react-icons/all-files/fa/FaCalendar";
+import { FaVideo } from "@react-icons/all-files/fa/FaVideo";
+import { HiViewGrid } from "@react-icons/all-files/hi/HiViewGrid";
+import { IoDocumentText } from "@react-icons/all-files/io5/IoDocumentText";
+import { MdContacts } from "@react-icons/all-files/md/MdContacts";
 import { RiMessage3Fill } from "@react-icons/all-files/ri/RiMessage3Fill";
 import React from "react";
 
@@ -7,50 +12,43 @@ export const listSidebarItems = [
   {
     id: "1",
     title: "Messages",
-    href: "workplace/messages",
-    icon: <RiMessage3Fill />,
+    href: "/workplace/messenger",
+    icon: <RiMessage3Fill size={18} />,
     children: [],
   },
   {
     id: "2",
     title: "Meetings",
-    href: "workplace/calls",
-    icon: <RiMessage3Fill />,
+    href: "/workplace/meetings",
+    icon: <FaVideo size={18} />,
     children: [],
   },
   {
     id: "3",
     title: "Calendar",
-    href: "workplace/groups",
-    icon: <RiMessage3Fill />,
+    href: "/workplace/groups",
+    icon: <FaCalendar size={15} />,
     children: [],
   },
   {
     id: "4",
     title: "Docs",
-    href: "workplace/contacts",
-    icon: <RiMessage3Fill />,
+    href: "/workplace/contacts",
+    icon: <IoDocumentText size={18} />,
     children: [],
   },
   {
     id: "6",
-    title: "Workplace",
-    href: "workplace/settings",
-    icon: <RiMessage3Fill />,
-    children: [],
-  },
-  {
-    id: "7",
-    title: "Base",
-    href: "workplace/settings",
-    icon: <RiMessage3Fill />,
+    title: "Contact",
+    href: "/workplace/settings",
+    icon: <MdContacts size={18} />,
     children: [],
   },
   {
     id: "8",
-    title: "Base",
-    href: "workplace/settings",
-    icon: <RiMessage3Fill />,
+    title: "Workplace",
+    href: "/workplace/settings",
+    icon: <HiViewGrid size={23} />,
     children: [
       {
         id: "5",
@@ -62,7 +60,7 @@ export const listSidebarItems = [
       {
         id: "6",
         title: "Favor",
-        href: "workplace/settings",
+        href: "/workplace/settings",
         icon: <RiMessage3Fill />,
         children: [],
       },
