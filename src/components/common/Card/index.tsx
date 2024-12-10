@@ -15,6 +15,7 @@ interface IProps {
   classNames?: {
     header?: string;
     body?: string;
+    footer?: string;
   };
 }
 export default function Card({ children, header, classNames, footer }: IProps) {
@@ -40,7 +41,9 @@ export default function Card({ children, header, classNames, footer }: IProps) {
       >
         {children}
       </CardBody>
-      {footer && <CardFooter>{footer}</CardFooter>}
+      {footer && (
+        <CardFooter className={classNames?.footer}>{footer}</CardFooter>
+      )}
     </CardUI>
   );
 }

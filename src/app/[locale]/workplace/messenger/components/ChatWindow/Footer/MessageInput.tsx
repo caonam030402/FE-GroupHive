@@ -1,14 +1,17 @@
 import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import React from "react";
+import EmojiPicker from "emoji-picker-react";
+import React, { useRef, useState } from "react";
 
 import { cn } from "@/libs/utils";
 
 import UtilityBar from "./UtilityBar";
 
 export default function MessageInput() {
-  const ref = React.useRef<HTMLDivElement>(null);
+  const [openEmojis, setOpenEmojis] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const emojiPickerRef = useRef<HTMLDivElement>(null);
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -27,10 +30,16 @@ export default function MessageInput() {
 
   const isOneLine = ref.current?.offsetHeight;
 
+  const handleBlurEmojisPicker = (event: React.FocusEvent<HTMLDivElement>) => {
+    if (!emojiPickerRef.current?.contains(event.relatedTarget)) {
+      setOpenEmojis(false);
+    }
+  };
+
   return (
     <div
       className={cn(
-        "flex w-full flex-wrap items-center rounded-md bg-gray-100 p-3 hover:bg-gray-200 gap-3",
+        "flex w-full flex-wrap items-center rounded-md bg-gray-100 p-3 hover:bg-gray-200 gap-3 relative",
       )}
       style={{
         alignItems: isOneLine ? "center" : "flex-start",
@@ -42,8 +51,17 @@ export default function MessageInput() {
         editor={editor}
         style={{ flex: "1 1 auto" }}
       />
-      <div className="mt-2 self-end">
-        <UtilityBar />
+
+      <div className="mt-2 self-end ">
+        <UtilityBar setOpenEmojis={setOpenEmojis} />
+      </div>
+
+      <div
+        ref={emojiPickerRef}
+        onBlur={handleBlurEmojisPicker}
+        className="absolute bottom-[115%] right-0 z-10"
+      >
+        <EmojiPicker searchDisabled open={openEmojis} />
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ export default function ChatWindow({ params }: { params: { id: string } }) {
   return (
     <Card
       footer={<Footer />}
-      classNames={{ header: "p-0" }}
+      classNames={{ header: "p-0", footer: "overflow-visible" }}
       header={<Header />}
     >
       {params.id}
