@@ -95,4 +95,28 @@ export const listChatMock = [
     message:
       "BE part - duplicate record I can do anything so I assigned Joel and",
   },
+  {
+    id: 14,
+    name: "John Doe",
+    avatar: "https://i.pravatar.cc/150?u=a04258a2462d826712d",
+    time: "10:10 AM",
+    message:
+      "BE part - duplicate record I can do anything so I assigned Joel and",
+  },
+  {
+    id: 15,
+    name: "John Doe",
+    avatar: "https://i.pravatar.cc/150?u=a04258a2462d826712d",
+    time: "10:10 AM",
+    message:
+      "BE part - duplicate record I can do anything so I assigned Joel and",
+  },
+  {
+    id: 16,
+    name: "John Doe",
+    avatar: "https://i.pravatar.cc/150?u=a04258a2462d826712d",
+    time: "10:10 AM",
+    message:
+      "BE part - duplicate record I can do anything so I assigned Joel and",
+  },
 ];

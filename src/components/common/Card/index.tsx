@@ -1,4 +1,9 @@
-import { Card as CardUI, CardBody, CardHeader } from "@nextui-org/card";
+import {
+  Card as CardUI,
+  CardBody,
+  CardFooter,
+  CardHeader,
+} from "@nextui-org/card";
 import React from "react";
 
 import { cn } from "@/libs/utils";
@@ -6,12 +11,13 @@ import { cn } from "@/libs/utils";
 interface IProps {
   children: React.ReactNode;
   header?: React.ReactNode;
+  footer?: React.ReactNode;
   classNames?: {
     header?: string;
     body?: string;
   };
 }
-export default function Card({ children, header, classNames }: IProps) {
+export default function Card({ children, header, classNames, footer }: IProps) {
   return (
     <CardUI
       classNames={{
@@ -34,6 +40,7 @@ export default function Card({ children, header, classNames }: IProps) {
       >
         {children}
       </CardBody>
+      {footer && <CardFooter>{footer}</CardFooter>}
     </CardUI>
   );
 }

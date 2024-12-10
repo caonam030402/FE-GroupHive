@@ -1,6 +1,7 @@
 import "@/styles/global.css";
 
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
 import { NextIntlClientProvider, useMessages } from "next-intl";
@@ -8,6 +9,8 @@ import { NextIntlClientProvider, useMessages } from "next-intl";
 import { AppConfig } from "@/configs/main/appConfig";
 
 import { Providers } from "../providers";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   icons: [
@@ -45,7 +48,7 @@ export default function RootLayout(props: {
   const messages = useMessages();
 
   return (
-    <html lang={props.params.locale}>
+    <html className={inter.className} lang={props.params.locale}>
       <body>
         <NextIntlClientProvider
           locale={props.params.locale}

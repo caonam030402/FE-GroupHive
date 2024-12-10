@@ -28,17 +28,20 @@ export default function ChatItem({ item }: Props) {
     <button
       type="button"
       onClick={handleClick}
-      className={cn("flex items-center gap-2 py-3 px-2 rounded-md", {
+      className={cn("flex items-center w-full gap-2 py-3 px-2 rounded-md", {
         "bg-primary-200/20": isActive,
       })}
     >
-      <Avatar className="shrink-0" src={item.avatar} />
-      <div className="space-y-1 text-xs">
+      <div className="relative ">
+        <Avatar className="shrink-0" src={item.avatar} />
+        <div className="absolute bottom-[6%] right-0 size-[9px] rounded-full border border-white bg-green-500" />
+      </div>
+      <div className="w-full space-y-1 text-xs">
         <div className="flex justify-between">
           <p className="text-[15px] font-medium">{item.name}</p>
-          <p>{item.time}</p>
+          <p className="text-zinc-500">{item.time}</p>
         </div>
-        <p className="line-clamp-1 text-start">{item.message}</p>
+        <p className="line-clamp-1 text-start text-zinc-500">{item.message}</p>
       </div>
     </button>
   );

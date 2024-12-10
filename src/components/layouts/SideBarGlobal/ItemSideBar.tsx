@@ -24,7 +24,7 @@ interface IItemSideBar extends SidebarItemType {
 export default function ItemSideBar({ item }: { item: IItemSideBar }) {
   const router = useRouter();
   const pathname = usePathname();
-  const isActive = pathname === item.href;
+  const isActive = pathname.includes(item.href);
   const isCollapsedSideBar = useSelector(selectIsCollapsed);
   const renderIconAccordion = () => {
     if (item.children && item.children.length > 0) {
@@ -57,7 +57,7 @@ export default function ItemSideBar({ item }: { item: IItemSideBar }) {
       className={cn(
         "flex w-full justify-start bg-transparent hover:bg-primary-500/20 rounded-md p-2 text-sm",
         {
-          // "bg-white text-primary": isActive,
+          "bg-white text-primary": isActive,
         },
         {
           "h-[50px]": isCollapsedSideBar,
